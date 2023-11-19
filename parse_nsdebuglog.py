@@ -1,7 +1,9 @@
-# PURPOSE: Parse nsdebuglog.log
+# PURPOSE: Parse nsdebuglog.log to highlight useful and important information
 # WRITTEN BY: Daniel Tavernier (dtavernier@netskope.com) with initial help from ChatGPT
 # USAGE: python3 parse_nsdebuglog.py
 # USAGE: python3 parse_nsdebuglog.py [custom path to nsdebuglog.log; default is /Library/Logs/Netskope/nsdebuglog.log]
+# CHANGELOG:
+#   20231118 - Initial release
 
 import re
 import argparse
