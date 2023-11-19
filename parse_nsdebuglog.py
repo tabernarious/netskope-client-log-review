@@ -64,7 +64,7 @@ def bypassing_flow_from_process_to_private_ip(log_file):
 
     return process_host_map
 
-# Steering: Web Traffic
+# Steering: Web Traffic (HTTP/S)
 def tunneling_flow_to_nsproxy(log_file):
     process_host_map = {}
 
@@ -94,6 +94,7 @@ def tunneling_flow_to_nsproxy(log_file):
 
     return process_host_map
 
+# Steering: Non-Web Traffic (Cloud Firewall)
 def tunneling_flow_to_appfw(log_file):
     process_host_map = {}
 
