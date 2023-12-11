@@ -4,6 +4,7 @@
 # USAGE: python3 parse_nsdebuglog.py [custom path to nsdebuglog.log; default is /Library/Logs/Netskope/nsdebuglog.log]
 # CHANGELOG:
 #   20231118 - Initial release
+#   20231211 - Fixed IP match for non-web traffic
 
 import re
 import argparse
@@ -100,7 +101,7 @@ def tunneling_flow_to_appfw(log_file):
 
     process_pattern = r' Tunneling flow from addr: .*, process: (.+) to host:.*to app-fw$'
     host_pattern = r' host: (.+),'
-    ip_pattern = r' addr: ([0-9.]+):'
+    ip_pattern = r', addr: ([0-9.]+):'
     port_pattern = r' addr: [0-9.]+:([0-9]+) '
 
     with open(log_file, 'r') as file:
