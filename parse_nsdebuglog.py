@@ -5,6 +5,7 @@
 # CHANGELOG:
 #   20231118 - Initial release
 #   20231211 - Fixed IP match for non-web traffic
+#   20240208 - Added bypass to exception host (Domain)
 
 import re
 import argparse
@@ -27,6 +28,35 @@ def bypassing_connection_from_processes(log_file):
 
                 if process_match and host_match:
                     host_ip_port = host_match.group(1)
+                    process_name = process_match.group(1).strip()
+
+                    if process_name in process_host_map:
+                        process_host_map[process_name].add(host_ip_port)
+                    else:
+                        process_host_map[process_name] = {host_ip_port}
+
+    return process_host_map
+
+# Steering Exception: Domain
+def bypassing_flow_to_exception_host(log_file):
+    process_host_map = {}
+
+    process_pattern = r' process: (.+), Dest IP'
+    host_pattern = r' bypassing flow to exception host: (.+), process:'
+    ip_pattern = r' Dest IP: (.+), Dest Port'
+    port_pattern = r' Port: ([0-9]+)$'
+
+    with open(log_file, 'r') as file:
+        for line in file:
+            process_match = re.search(process_pattern, line)
+
+            if process_match:
+                host_match = re.search(host_pattern, line)
+                ip_match = re.search(ip_pattern, line)
+                port_match = re.search(port_pattern, line)
+
+                if host_match and process_match and ip_match and port_match:
+                    host_ip_port = host_match.group(1) + " (" + ip_match.group(1) + ":" + port_match.group(1) + ")"
                     process_name = process_match.group(1).strip()
 
                     if process_name in process_host_map:
@@ -150,6 +180,11 @@ def main():
     print()
     print("##############################\n## Bypassed Connections from Cert-Pinned Apps\n##############################")
     for process, hosts in sorted(bypassing_connection_from_processes(log_file_path).items()):
+        print(f"Process: {process}: {', '.join(sorted(hosts))}")
+
+    print()
+    print("##############################\n## Bypassed Connections to Domains\n##############################")
+    for process, hosts in sorted(bypassing_flow_to_exception_host(log_file_path).items()):
         print(f"Process: {process}: {', '.join(sorted(hosts))}")
 
     print()
