@@ -8,6 +8,31 @@
 #   20231211 - Fixed IP match for non-web traffic
 #   20240208 - Added bypass to exception host (Domain)
 
+# SUPPORTED EXAMPLE LOG LINES per Steering/Exception Type:
+# Steering Exception: Cert-Pinned App
+#   BypassAppMgr Bypassing connection from process: google drive, host: www.googleapis.com
+# Steering Exception: Domain
+#   BypassAppMgr bypassing flow to exception host: st3.zoom.us, process: google chrome helper, Dest IP: 52.84.151.63, Dest Port: 443
+# Steering Exception: Destination Location - Local IP Address
+#   BypassAppMgr Bypassing flow from process: spotify to private ip: 192.168.1.123, Port: 1400, host: 192.168.1.123
+# Steering: Web Traffic (HTTP/S)
+#   Tunneling flow from addr: 192.168.1.146:53405, process: kandji-daemon to host: rtc.iot.kandji.io, addr: 54.185.70.68:443 to nsProxy
+# Steering: Non-Web Traffic (Cloud Firewall)
+#   Tunneling flow from addr: 192.168.1.161:53350, process: google chrome helper to host: 142.251.176.188, addr: 142.251.176.188:5228 to app-fw
+
+# FUTURE EXAMPLE LOG LINES per Steering/Exception Type:
+# Steering Exception: Application (Firewall App)
+# Steering Exception: Application (Cloud App)
+# Steering Exception: Category (does this look the same as Domains)
+# Steering Exception: Cert-Pinned App with Tunnel Mode
+# Steering Exception: Destination Location - Network Location
+# Steering Exception: DNS (is this even logged?)
+# Steering Exception: Source Locations
+# Steering Exception: Source Countries
+# Steering Exception: Bypass at Netskope Cloud (Legacy On-Premises Detection *or* Flexible Dynamic Steering)
+# Steering: Endpoint DLP (does this log anything)
+# Steering: DNS (is this even logged?)
+
 import re
 import argparse
 
