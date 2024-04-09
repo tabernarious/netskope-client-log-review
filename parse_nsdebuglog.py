@@ -7,6 +7,7 @@
 #   20231118 - Initial release
 #   20231211 - Fixed IP match for non-web traffic
 #   20240208 - Added bypass to exception host (Domain)
+#   20240209 - Updated future examples
 
 # SUPPORTED EXAMPLE LOG LINES per Steering/Exception Type:
 # Steering Exception: Cert-Pinned App
@@ -24,7 +25,9 @@
 # Steering Exception: Application (Firewall App)
 # Steering Exception: Application (Cloud App)
 # Steering Exception: Category (does this look the same as Domains)
+#   (Steered to Netskope and SSL Do Not Decrypt applied)
 # Steering Exception: Cert-Pinned App with Tunnel Mode
+#   BypassAppMgr Bypassing connection by tunneling from process: msedgewebview2.exe, host: ok12static.oktacdn.com
 # Steering Exception: Destination Location - Network Location
 # Steering Exception: DNS (is this even logged?)
 # Steering Exception: Source Locations
@@ -32,6 +35,9 @@
 # Steering Exception: Bypass at Netskope Cloud (Legacy On-Premises Detection *or* Flexible Dynamic Steering)
 # Steering: Endpoint DLP (does this log anything)
 # Steering: DNS (is this even logged?)
+# Unknown
+#   ExceptiontMgr IP 10.2.100.207 is found in IP address range Exception List
+#   ExceptiontMgr IP address : 10.2.100.207 is in firewall exceptions
 
 import re
 import argparse
