@@ -11,6 +11,7 @@
 #   20240428 - IPs are now listed when "host" is blank (often a sign of DNS issues)
 #            - Reworked and cleaned up output headers; capitalized PROCESS
 #            - Updated future examples
+#   20240428 - Added "Steering Exceptions by Tunneling from Cert-Pinned Apps"
 
 # SUPPORTED EXAMPLE LOG LINES per Steering/Exception Type:
 # Steering Exception: Cert-Pinned App
@@ -30,8 +31,11 @@
 # Steering Exception: Category (does this look the same as Domains)
 #   (Steered to Netskope; SSL Do Not Decrypt applied; All policies bypassed)
 # Steering Exception: Cert-Pinned App with Tunnel Mode
+#   Tunnel domains must be a subset of the App Domains and Custom App Domains
+#   Custom App Domains only include one level of sub-domain (example.com will include x.example.com but not y.x.example.com)
 #   BypassAppMgr Bypassing connection by tunneling from process: msedgewebview2.exe, host: ok12static.oktacdn.com
-#   2024/04/28 02:11:12.754 stAgentSvc p1180 t1228 info bypassAppMgr.cpp:669 BypassAppMgr Bypassing connection by tunneling from process: chrome.exe, host: slashdot.org
+#   2024/04/28 11:02:28.408 stAgentSvc p17fc tb44 info bypassAppMgr.cpp:669 BypassAppMgr Bypassing connection by tunneling from process: chrome.exe, host: udc.yahoo.com
+#   2024/04/28 11:02:28.409 stAgentSvc p17fc tb44 info tunnel.cpp:878 nsTunnel DTLS [sessId 1] Tunneling flow from addr: 10.0.2.140:60894, process: chrome.exe to host: udc.yahoo.com, addr: 98.136.103.27:443 to
 # Steering Exception: Cert-Pinned App with Managed Device (ignores Custom App Domains and applies bypass to all domains)
 #   2024/04/28 02:04:54.302 stAgentSvc p1180 t1228 info bypassAppMgr.cpp:1150 BypassAppMgr Found process: chrome.exe to be bypassed for managed devices
 #   2024/04/28 02:04:54.302 stAgentSvc p1180 t1228 info bypassAppMgr.cpp:1153 BypassAppMgr device classification status: managed
@@ -54,10 +58,39 @@ import re
 import argparse
 
 # Steering Exception: Cert-Pinned App
-def bypassing_connection_from_processes(log_file):
+def bypassing_connection_from_process(log_file):
     process_host_map = {}
 
     process_pattern = r' Bypassing connection from process: (.+), host:'
+    host_pattern = r' host: (.+)$'
+
+    with open(log_file, 'r') as file:
+        for line in file:
+            process_match = re.search(process_pattern, line)
+
+            if process_match:
+                host_match = re.search(host_pattern, line)
+    #            ip_match = re.search(ip_pattern, line)
+    #            port_match = re.search(port_pattern, line)
+
+                if process_match and host_match:
+                    host_ip_port = host_match.group(1)
+                    process_name = process_match.group(1).strip()
+
+                    if process_name in process_host_map:
+                        process_host_map[process_name].add(host_ip_port)
+                    else:
+                        process_host_map[process_name] = {host_ip_port}
+
+    return process_host_map
+
+# Steering Exception: Cert-Pinned App Tunnel Mode
+def bypassing_connection_by_tunneling_from_process(log_file):
+    #2024/04/28 11:02:28.408 stAgentSvc p17fc tb44 info bypassAppMgr.cpp:669 BypassAppMgr Bypassing connection by tunneling from process: chrome.exe, host: udc.yahoo.com
+
+    process_host_map = {}
+
+    process_pattern = r' Bypassing connection by tunneling from process: (.+), host:'
     host_pattern = r' host: (.+)$'
 
     with open(log_file, 'r') as file:
@@ -211,7 +244,7 @@ def main():
 
     log_file_path = args.log_file
 #    process_map_bypassing_flow_from_process_to_private_ip = bypassing_flow_from_process_to_private_ip(log_file_path)
-#    process_map_bypassing_connection_from_processes = bypassing_connection_from_processes(log_file_path)
+#    process_map_bypassing_connection_from_process = bypassing_connection_from_process(log_file_path)
 #    process_map_tunneling_flow_to_nsproxy = tunneling_flow_to_nsproxy(log_file_path)
 #    process_map_tunneling_flow_to_appfw = tunneling_flow_to_appfw(log_file_path)
 
@@ -232,10 +265,22 @@ def main():
     print("##############################################################################")
     print("## Steering Exceptions from Cert-Pinned Apps (not sent to Netskope Cloud)")
     print("##############################################################################")
-    if len(bypassing_connection_from_processes(log_file_path)) == 0:
+    if len(bypassing_connection_from_process(log_file_path)) == 0:
         print ("(none found)")
     else:
-        for process, hosts in sorted(bypassing_connection_from_processes(log_file_path).items()):
+        for process, hosts in sorted(bypassing_connection_from_process(log_file_path).items()):
+            print(f"PROCESS: {process}: {', '.join(sorted(hosts))}")
+
+    print()
+    print("##############################################################################")
+    print("## Steering Exceptions by Tunneling from Cert-Pinned Apps")
+    print("## (sent to Netskope where decryption and all policies are bypassed)")
+    print("## NOTE: These connections will be duplicated in \"Steered Web Traffic\" below.")
+    print("##############################################################################")
+    if len(bypassing_connection_by_tunneling_from_process(log_file_path)) == 0:
+        print ("(none found)")
+    else:
+        for process, hosts in sorted(bypassing_connection_by_tunneling_from_process(log_file_path).items()):
             print(f"PROCESS: {process}: {', '.join(sorted(hosts))}")
 
     print()
