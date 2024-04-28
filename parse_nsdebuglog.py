@@ -8,6 +8,9 @@
 #   20231211 - Fixed IP match for non-web traffic
 #   20240208 - Added bypass to exception host (Domain)
 #   20240209 - Updated future examples
+#   20240428 - IPs are now listed when "host" is blank (often a sign of DNS issues)
+#            - Reworked and cleaned up output headers; capitalized PROCESS
+#            - Updated future examples
 
 # SUPPORTED EXAMPLE LOG LINES per Steering/Exception Type:
 # Steering Exception: Cert-Pinned App
@@ -25,13 +28,21 @@
 # Steering Exception: Application (Firewall App)
 # Steering Exception: Application (Cloud App)
 # Steering Exception: Category (does this look the same as Domains)
-#   (Steered to Netskope and SSL Do Not Decrypt applied)
+#   (Steered to Netskope; SSL Do Not Decrypt applied; All policies bypassed)
 # Steering Exception: Cert-Pinned App with Tunnel Mode
 #   BypassAppMgr Bypassing connection by tunneling from process: msedgewebview2.exe, host: ok12static.oktacdn.com
+#   2024/04/28 02:11:12.754 stAgentSvc p1180 t1228 info bypassAppMgr.cpp:669 BypassAppMgr Bypassing connection by tunneling from process: chrome.exe, host: slashdot.org
+# Steering Exception: Cert-Pinned App with Managed Device (ignores Custom App Domains and applies bypass to all domains)
+#   2024/04/28 02:04:54.302 stAgentSvc p1180 t1228 info bypassAppMgr.cpp:1150 BypassAppMgr Found process: chrome.exe to be bypassed for managed devices
+#   2024/04/28 02:04:54.302 stAgentSvc p1180 t1228 info bypassAppMgr.cpp:1153 BypassAppMgr device classification status: managed
+#   2024/04/28 02:04:54.302 stAgentSvc p1180 t1228 info bypassAppMgr.cpp:654 BypassAppMgr Bypassing connection from process: chrome.exe, host: optimizationguide-pa.googleapis.com
+# Steering Exception: Cert-Pinned App Block (ignores Custom App Domains and blocks all domains)
+#   2024/04/28 01:56:53.795 stAgentSvc p1fc tbac info bypassAppMgr.cpp:663 BypassAppMgr Dropping connection from process: chrome.exe, host: clientservices.googleapis.com
 # Steering Exception: Destination Location - Network Location
 # Steering Exception: DNS (is this even logged?)
 # Steering Exception: Source Locations
 # Steering Exception: Source Countries
+#   (Steered to Netskope; SSL Do Not Decrypt applied; All policies bypassed)
 # Steering Exception: Bypass at Netskope Cloud (Legacy On-Premises Detection *or* Flexible Dynamic Steering)
 # Steering: Endpoint DLP (does this log anything)
 # Steering: DNS (is this even logged?)
@@ -133,8 +144,8 @@ def tunneling_flow_to_nsproxy(log_file):
 
     process_pattern = r' Tunneling flow from addr: .*, process: (.+) to host:.*to nsProxy$'
     host_pattern = r' host: (.+),'
-#    ip_pattern = r' addr: (.+):'
-#    port_pattern = r' addr: .+:([0-9]+) '
+    ip_pattern = r', addr: (.+):'
+    #port_pattern = r', addr: .+:([0-9]+)'
 
     with open(log_file, 'r') as file:
         for line in file:
@@ -142,18 +153,21 @@ def tunneling_flow_to_nsproxy(log_file):
 
             if process_match:
                 host_match = re.search(host_pattern, line)
-    #            ip_match = re.search(ip_pattern, line)
-    #            port_match = re.search(port_pattern, line)
+                ip_match = re.search(ip_pattern, line)
+                #port_match = re.search(port_pattern, line)
 
-                if process_match and host_match:
+                if host_match:
                     host_ip_port = host_match.group(1)
-    #                host_ip_port = host_match.group(1) + ":" + port_match.group(1)
-                    process_name = process_match.group(1).strip()
+                else:
+                    host_ip_port = ip_match.group(1)
+                    #host_ip_port = ip_match.group(1) + ":" + port_match.group(1)
 
-                    if process_name in process_host_map:
-                        process_host_map[process_name].add(host_ip_port)
-                    else:
-                        process_host_map[process_name] = {host_ip_port}
+                process_name = process_match.group(1).strip()
+
+                if process_name in process_host_map:
+                    process_host_map[process_name].add(host_ip_port)
+                else:
+                    process_host_map[process_name] = {host_ip_port}
 
     return process_host_map
 
@@ -164,7 +178,7 @@ def tunneling_flow_to_appfw(log_file):
     process_pattern = r' Tunneling flow from addr: .*, process: (.+) to host:.*to app-fw$'
     host_pattern = r' host: (.+),'
     ip_pattern = r', addr: ([0-9.]+):'
-    port_pattern = r' addr: [0-9.]+:([0-9]+) '
+    port_pattern = r', addr: [0-9.]+:([0-9]+)'
 
     with open(log_file, 'r') as file:
         for line in file:
@@ -205,29 +219,56 @@ def main():
     print("################################\n##                            ##\n## Netskope Client Log Review ##\n##                            ##\n################################")
 
     print()
-    print("##############################\n## Bypassed Connections to Private IPs\n##############################")
-    for process, hosts in sorted(bypassing_flow_from_process_to_private_ip(log_file_path).items()):
-        print(f"Process: {process}: {', '.join(sorted(hosts))}")
+    print("##############################################################################")
+    print("## Steering Exceptions to Private IPs (not sent to Netskope Cloud)")
+    print("##############################################################################")
+    if len(bypassing_flow_from_process_to_private_ip(log_file_path)) == 0:
+        print ("(none found)")
+    else:
+        for process, hosts in sorted(bypassing_flow_from_process_to_private_ip(log_file_path).items()):
+            print(f"PROCESS: {process}: {', '.join(sorted(hosts))}")
 
     print()
-    print("##############################\n## Bypassed Connections from Cert-Pinned Apps\n##############################")
-    for process, hosts in sorted(bypassing_connection_from_processes(log_file_path).items()):
-        print(f"Process: {process}: {', '.join(sorted(hosts))}")
+    print("##############################################################################")
+    print("## Steering Exceptions from Cert-Pinned Apps (not sent to Netskope Cloud)")
+    print("##############################################################################")
+    if len(bypassing_connection_from_processes(log_file_path)) == 0:
+        print ("(none found)")
+    else:
+        for process, hosts in sorted(bypassing_connection_from_processes(log_file_path).items()):
+            print(f"PROCESS: {process}: {', '.join(sorted(hosts))}")
 
     print()
-    print("##############################\n## Bypassed Connections to Domains\n##############################")
-    for process, hosts in sorted(bypassing_flow_to_exception_host(log_file_path).items()):
-        print(f"Process: {process}: {', '.join(sorted(hosts))}")
+    print("##############################################################################")
+    print("## Steering Exceptions to Domains (not sent to Netskope Cloud)")
+    print("##############################################################################")
+    if len(bypassing_flow_to_exception_host(log_file_path)) == 0:
+        print ("(none found)")
+    else:
+        for process, hosts in sorted(bypassing_flow_to_exception_host(log_file_path).items()):
+            print(f"PROCESS: {process}: {', '.join(sorted(hosts))}")
 
     print()
-    print("##############################\n## Tunneled Web Traffic (nsProxy)\n##############################")
-    for process, hosts in sorted(tunneling_flow_to_nsproxy(log_file_path).items()):
-        print(f"Process: {process}: {', '.join(sorted(hosts))}")
+    print("##############################################################################")
+    print("## Steered Web Traffic (HTTP/S) (sent to Netskope NG-SWG \"nsProxy\")")
+    print("## NOTE: Category and Destination Country Steering Exceptions are steered")
+    print("##       to Netskope where decryption and all policies are bypassed.")
+    print("##############################################################################")
+    if len(tunneling_flow_to_nsproxy(log_file_path)) == 0:
+        print ("(none found)")
+    else:
+        for process, hosts in sorted(tunneling_flow_to_nsproxy(log_file_path).items()):
+            print(f"PROCESS: {process}: {', '.join(sorted(hosts))}")
 
     print()
-    print("##############################\n## Tunneled Non-Web Traffic (app-fw)\n##############################")
-    for process, hosts in sorted(tunneling_flow_to_appfw(log_file_path).items()):
-        print(f"Process: {process}: {', '.join(sorted(hosts))}")
+    print("##############################################################################")
+    print("## Steered Non-Web Traffic (sent to Netskope Cloud Firewall \"app-fw\")")
+    print("##############################################################################")
+    if len(tunneling_flow_to_appfw(log_file_path)) == 0:
+        print ("(none found)")
+    else:
+        for process, hosts in sorted(tunneling_flow_to_appfw(log_file_path).items()):
+            print(f"PROCESS: {process}: {', '.join(sorted(hosts))}")
 
     print()
 
