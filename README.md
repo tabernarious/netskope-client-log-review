@@ -7,6 +7,7 @@ Parse nsdebuglog.log to highlight useful and important information:
 * Steering Exceptions
 * Per-process summary of domains/IPs accessed
 
+### Usage and Examples
 USAGE: `python3 parse_nsdebuglog.py [/path/to/nsdebuglog.log]`
 
 EXAMPLE: `python3 parse_nsdebuglog.py`
