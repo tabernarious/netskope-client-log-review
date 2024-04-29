@@ -12,6 +12,7 @@
 #            - Reworked and cleaned up output headers; capitalized PROCESS
 #            - Updated future examples
 #   20240428 - Added "Steering Exceptions by Tunneling from Cert-Pinned Apps"
+#   20240429 - Added per-OS default log file paths (as of R114)
 
 # SUPPORTED EXAMPLE LOG LINES per Steering/Exception Type:
 # Steering Exception: Cert-Pinned App
@@ -56,6 +57,7 @@
 
 import re
 import argparse
+import platform
 
 # Steering Exception: Cert-Pinned App
 def bypassing_connection_from_process(log_file):
@@ -239,14 +241,30 @@ def tunneling_flow_to_appfw(log_file):
 
 def main():
     parser = argparse.ArgumentParser(description='Parse log file for process names and associated hosts')
-    parser.add_argument('log_file', nargs='?', default='/Library/Logs/Netskope/nsdebuglog.log', help='Path to the log file')
+    #parser.add_argument('log_file', nargs='?', default='/Library/Logs/Netskope/nsdebuglog.log', help='Path to the log file')
+    parser.add_argument('log_file', nargs='?', help='Path to the log file')
     args = parser.parse_args()
+    system_os = platform.system()
 
-    log_file_path = args.log_file
-#    process_map_bypassing_flow_from_process_to_private_ip = bypassing_flow_from_process_to_private_ip(log_file_path)
-#    process_map_bypassing_connection_from_process = bypassing_connection_from_process(log_file_path)
-#    process_map_tunneling_flow_to_nsproxy = tunneling_flow_to_nsproxy(log_file_path)
-#    process_map_tunneling_flow_to_appfw = tunneling_flow_to_appfw(log_file_path)
+    if args.log_file:
+        log_file_path = args.log_file
+        print("Log file specified")
+        print("Using: " + log_file_path)
+    elif system_os == "Windows":
+        log_file_path = 'C:\ProgramData\netskope\stagent\Logs\nsdebuglog.log'
+        print("No log file specified")
+        print("Using Windows default: " + log_file_path)
+    elif system_os == "Linux":
+        log_file_path = '/opt/netskope/stagent/log/nsdebuglog.log'
+        print("No log file specified")
+        print("Using Linux default: " + log_file_path)
+    elif system_os == "Darwin":
+        log_file_path = '/Library/Logs/Netskope/nsdebuglog.log'
+        print("No log file specified")
+        print("Using macOS default: " + log_file_path)
+    else:
+        print("No log file specified\nUnknown operating system\nExisting...")
+        exit()
 
     print()
     print("################################\n##                            ##\n## Netskope Client Log Review ##\n##                            ##\n################################")
