@@ -283,10 +283,10 @@ def main():
         exit()
 
     print()
-    print("################################\n")
-    print("##                            ##\n")
-    print("## Netskope Client Log Review ##\n")
-    print("##                            ##\n")
+    print("################################")
+    print("##                            ##")
+    print("## Netskope Client Log Review ##")
+    print("##                            ##")
     print("################################")
 
     print()
