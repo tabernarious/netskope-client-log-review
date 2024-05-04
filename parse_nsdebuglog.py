@@ -68,9 +68,11 @@ def datestamps_first_last_line(log_file):
         log_lines = file.readlines()
 
         datestamp_first_line = re.search(datestamp_pattern, log_lines[0])
+        print(log_lines[0])
         print(datestamp_first_line)
 
         datestamp_last_line = re.search(datestamp_pattern, log_lines[-1])
+        print(log_lines[1])
         print(datestamp_last_line)
 
 # Steering Exception: Cert-Pinned App
