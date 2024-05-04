@@ -65,7 +65,7 @@ def datestamps_first_last_line(log_file):
     datestamp = r'^(20[0-9]{2}/[0-9]{2}/[0-9]{2}] [0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{,3}) '
 
     with open(log_file) as file:
-        log_lines = log_file.readlines()
+        log_lines = file.readlines()
 
         datestamp_first_line = re.search(process_pattern, log_lines[0])
         print(datestamp_first_line)
