@@ -68,12 +68,12 @@ def datestamps_first_last_line(log_file):
         log_lines = file.readlines()
 
         datestamp_first_line = re.search(datestamp_pattern, log_lines[0])
-        print(log_lines[0])
-        print(datestamp_first_line.group(1).strip())
+        #print(log_lines[0])
+        print("First log line Datestamp: " + datestamp_first_line.group(1).strip())
 
         datestamp_last_line = re.search(datestamp_pattern, log_lines[-1])
-        print(log_lines[-1])
-        print(datestamp_last_line.group(1).strip())
+        #print(log_lines[-1])
+        print("Last log line Datestamp:  " + datestamp_last_line.group(1).strip())
 
 # Steering Exception: Cert-Pinned App
 def bypassing_connection_from_process(log_file):
