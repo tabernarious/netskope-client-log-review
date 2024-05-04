@@ -59,6 +59,20 @@ import re
 import argparse
 import platform
 
+# Read and print first and last datestamps for context
+def datestamps_first_last_line(log_file):
+    #Example datestamp from nsdebuglog: 2024/04/30 16:50:14.733
+    datestamp = r'^(20[0-9]{2}/[0-9]{2}/[0-9]{2}] [0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{,3}) '
+
+    with open(log_file) as file:
+        log_lines = log_file.readlines()
+
+        datestamp_first_line = re.search(process_pattern, log_lines[0])
+        print(datestamp_first_line)
+
+        datestamp_last_line = re.search(process_pattern, log_lines[-1])
+        print(datestamp_last_line)
+
 # Steering Exception: Cert-Pinned App
 def bypassing_connection_from_process(log_file):
     process_host_map = {}
@@ -267,7 +281,14 @@ def main():
         exit()
 
     print()
-    print("################################\n##                            ##\n## Netskope Client Log Review ##\n##                            ##\n################################")
+    print("################################\n")
+    print("##                            ##\n")
+    print("## Netskope Client Log Review ##\n")
+    print("##                            ##\n")
+    print("################################")
+
+    print()
+    datestamps_first_last_line(log_file_path)
 
     print()
     print("##############################################################################")
