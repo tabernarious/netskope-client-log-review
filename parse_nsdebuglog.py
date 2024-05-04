@@ -288,6 +288,8 @@ def main():
     print("## Netskope Client Log Review ##")
     print("##                            ##")
     print("################################")
+    print()
+    print("Validated as of Netskope R114")
 
     print()
     datestamps_first_last_line(log_file_path)
