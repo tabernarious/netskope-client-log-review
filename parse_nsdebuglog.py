@@ -62,7 +62,7 @@ import platform
 # Read and print first and last datestamps for context
 def datestamps_first_last_line(log_file):
     #Example datestamp from nsdebuglog: 2024/04/30 16:50:14.733
-    datestamp_pattern = r'^(20[0-9]{2}/[0-9]{2}/[0-9]{2}] [0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{,3}) '
+    datestamp_pattern = r'^(20[0-9]{2}\/[0-9]{2}\/[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]+?) '
 
     with open(log_file) as file:
         log_lines = file.readlines()
