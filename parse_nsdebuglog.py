@@ -337,8 +337,9 @@ def main():
     print()
     print("##############################################################################")
     print("## Steered Web Traffic (HTTP/S) (sent to Netskope NG-SWG \"nsProxy\")")
-    print("## NOTE: Category and Destination Country Steering Exceptions are steered")
-    print("##       to Netskope where decryption and all policies are bypassed.")
+    # Need to validate this NOTE
+    #print("## NOTE: Category and Destination Country Steering Exceptions are steered")
+    #print("##       to Netskope where decryption and all policies are bypassed.")
     print("##############################################################################")
     if len(tunneling_flow_to_nsproxy(log_file_path)) == 0:
         print ("(none found)")
