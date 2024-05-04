@@ -62,15 +62,15 @@ import platform
 # Read and print first and last datestamps for context
 def datestamps_first_last_line(log_file):
     #Example datestamp from nsdebuglog: 2024/04/30 16:50:14.733
-    datestamp = r'^(20[0-9]{2}/[0-9]{2}/[0-9]{2}] [0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{,3}) '
+    datestamp_pattern = r'^(20[0-9]{2}/[0-9]{2}/[0-9]{2}] [0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{,3}) '
 
     with open(log_file) as file:
         log_lines = file.readlines()
 
-        datestamp_first_line = re.search(process_pattern, log_lines[0])
+        datestamp_first_line = re.search(datestamp_pattern, log_lines[0])
         print(datestamp_first_line)
 
-        datestamp_last_line = re.search(process_pattern, log_lines[-1])
+        datestamp_last_line = re.search(datestamp_pattern, log_lines[-1])
         print(datestamp_last_line)
 
 # Steering Exception: Cert-Pinned App
