@@ -1,6 +1,11 @@
 # netskope-client-log-review
 Parse and highlight information from Netskope Client Logs
 
+## Example Output
+Example output produced by:
+* `parse_nsdebuglog.py`
+  * See `nsdebuglog.log-PARSED-EXAMPLE.txt`
+
 ## parse_nsdebuglog.py
 ### Purpose
 Parse nsdebuglog.log to highlight useful and important information:

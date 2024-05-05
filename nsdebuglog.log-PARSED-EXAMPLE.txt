@@ -1,0 +1,109 @@
+No log file specified
+Using macOS default: /Library/Logs/Netskope/nsdebuglog.log
+
+################################
+##                            ##
+## Netskope Client Log Review ##
+##                            ##
+################################
+
+Validated as of Netskope R114
+
+First log line Datestamp: 2024/05/04 12:51:41.228554
+Last  log line Datestamp: 2024/05/04 16:24:27.527121
+
+##############################################################################
+## Steering Exceptions to Private IPs (not sent to Netskope Cloud)
+##############################################################################
+PROCESS: com.crowdstrike.falcon.agent: 169.254.169.254:80
+PROCESS: google chrome helper: 192.168.1.192:60000, 192.168.1.192:8009, 192.168.1.69:60000, 192.168.1.69:8009, 192.168.1.85:60000, 192.168.1.85:8009, 192.168.1.87:8009
+
+##############################################################################
+## Steering Exceptions from Cert-Pinned Apps (not sent to Netskope Cloud)
+##############################################################################
+PROCESS: addressbooksourcesync: gateway.icloud.com, mask-api.icloud.com, p156-contacts.icloud.com, p156-fmipmobile.icloud.com, p161-contacts.icloud.com, p51-fmip.icloud.com, p64-contacts.icloud.com
+PROCESS: appstoreagent: bag.itunes.apple.com
+PROCESS: cloudd: gateway.icloud.com, metrics.icloud.com, setup.icloud.com
+PROCESS: google drive: appsitemsuggest-pa.googleapis.com, drivefrontend-pa.googleapis.com, fcmconnection.googleapis.com, firebaseperusertopics-pa.googleapis.com, peoplestackwebexperiments-pa.clients6.google.com, play.googleapis.com, waa-pa.clients6.google.com, www.googleapis.com
+PROCESS: imtransferagent: gateway-asset.icloud-content.com
+PROCESS: insync: cloud.druva.com, pnw10-cloud.druva.com
+PROCESS: mobileassetd: gdmf.apple.com, xp.apple.com
+PROCESS: nsurlsessiond: gateway.icloud.com
+PROCESS: securityd: gateway.icloud.com
+PROCESS: syspolicyd: api.apple-cloudkit.com
+PROCESS: zoom.us: www3.zoom.us
+
+##############################################################################
+## Steering Exceptions by Tunneling from Cert-Pinned Apps
+## (sent to Netskope where decryption and all policies are bypassed)
+## NOTE: These connections will be duplicated in "Steered Web Traffic" below.
+##############################################################################
+(none found)
+
+##############################################################################
+## Steering Exceptions to Domains (not sent to Netskope Cloud)
+##############################################################################
+PROCESS: akd: gsas.apple.com (17.188.23.79:443)
+PROCESS: amagent: api.automox.com (34.217.203.142:443), api.automox.com (35.81.178.157:443), api.automox.com (44.240.68.143:443)
+PROCESS: amsengagementd: amp-api.media.apple.com (23.220.108.160:443), apps.mzstatic.com (23.214.124.24:443), bag.itunes.apple.com (151.101.3.6:443), experiments.apple.com (23.197.184.112:443), itunes.apple.com (23.214.124.24:443), play.itunes.apple.com (23.40.99.139:443), radio.itunes.apple.com (23.214.124.24:443), sf-api-token-service.itunes.apple.com (23.220.108.31:443)
+PROCESS: assetcachelocatorservice: lcdn-locator.apple.com (17.36.200.79:443), valid.apple.com (17.253.27.203:443)
+PROCESS: assistant_service: ocsp2.apple.com (17.253.27.203:443), p156-fmipmobile.icloud.com (17.248.203.64:443), radio.itunes.apple.com (23.214.124.24:443)
+PROCESS: assistantd: guzzoni.apple.com (13.59.48.42:443), ocsp2.apple.com (17.253.27.203:443)
+PROCESS: biomesyncd: gateway.icloud.com (17.248.210.70:443)
+PROCESS: categoriesservice: itunes.apple.com (23.214.124.24:443)
+PROCESS: com.apple.geod: configuration.ls.apple.com (23.214.125.107:443), gsp-ssl.ls.apple.com (17.253.27.214:443), gspe1-ssl.ls.apple.com (104.88.206.206:443), gspe1-ssl.ls.apple.com (23.33.22.77:443)
+PROCESS: com.apple.sbd: p156-contacts.icloud.com (17.248.203.64:443)
+PROCESS: com.microsoft.autoupdate.helper: ocsp2.apple.com (17.253.27.206:443)
+PROCESS: commerce: init.itunes.apple.com (23.214.124.24:443), xp.apple.com (23.220.110.113:443)
+PROCESS: findmydeviced: ocsp2.apple.com (17.253.27.203:443), p51-fmip.icloud.com (17.248.203.64:443)
+PROCESS: google chrome helper: android.clients.google.com (142.250.191.238:443), play.google.com (142.250.190.110:443), play.google.com (142.250.190.78:443), play.google.com (142.250.191.174:443), play.google.com (142.250.191.206:443), play.google.com (172.217.4.206:443)
+PROCESS: identityservicesd: query.ess.apple.com (17.138.144.4:443), query.ess.apple.com (17.145.52.65:443)
+PROCESS: itunescloudd: apps.mzstatic.com (23.214.124.24:443), init.itunes.apple.com (23.214.124.24:443), init.itunes.apple.com (69.192.208.23:443), musicstatus.itunes.apple.com (17.8.152.135:443), ocsp2.apple.com (17.253.27.203:443), radio.itunes.apple.com (23.214.124.24:443)
+PROCESS: mdnsresponder: apple.com (17.253.144.10:443), doh.dns.apple.com (64.78.200.1:443), mask.icloud.com (17.248.139.233:443), mask.icloud.com (17.248.139.235:443)
+PROCESS: microsoft update assistant: mobile.events.data.microsoft.com (20.42.73.26:443), officecdnmac.microsoft.com (23.59.169.204:443)
+PROCESS: networkserviceproxy: mask-api.icloud.com (17.248.203.64:443), p51-fmip.icloud.com (17.248.203.64:443)
+PROCESS: nsurlsessiond: mesu.apple.com (17.253.27.195:443), mesu.apple.com (17.253.27.200:443), mesu.apple.com (17.253.27.201:443), mesu.apple.com (17.253.27.203:443)
+PROCESS: parsec-fbf: fbs.smoot.apple.com (100.22.10.168:443), fbs.smoot.apple.com (44.232.224.125:443)
+PROCESS: photoanalysisd: bag.itunes.apple.com (151.101.131.6:443)
+PROCESS: routined: gateway.icloud.com (17.248.210.70:443)
+PROCESS: rtcreportingd: metrics.icloud.com (17.248.203.128:443), pancake.apple.com (17.253.27.196:443), pancake.apple.com (17.253.27.204:443), pancake.apple.com (17.253.27.205:443), pancake.apple.com (17.253.49.202:443), xp.apple.com (23.220.110.113:443)
+PROCESS: searchpartyd: gateway.icloud.com (17.248.203.64:443), ocsp2.apple.com (17.253.27.203:443)
+PROCESS: searchpartyuseragent: gateway.icloud.com (17.248.207.65:443), gateway.icloud.com (17.248.207.66:443), gateway.icloud.com (17.248.207.69:443), gateway.icloud.com (17.248.210.64:443)
+PROCESS: securityuploadd: xp.apple.com (23.220.110.113:443)
+PROCESS: siriknowledged: gateway.icloud.com (17.248.210.70:443)
+PROCESS: submitdiaginfo: iphonesubmissions.apple.com (17.137.170.36:443), ocsp2.apple.com (17.253.27.203:443)
+PROCESS: tipsd: ipcdn.apple.com (17.253.27.197:443)
+PROCESS: transparencyd: gateway.icloud.com (17.248.207.68:443)
+PROCESS: triald: gateway.icloud.com (17.248.210.64:443), valid.apple.com (17.253.27.203:443)
+PROCESS: trustd: ocsp2.apple.com (17.253.27.206:443), valid.apple.com (17.253.27.195:443)
+
+##############################################################################
+## Steered Web Traffic (HTTP/S) (sent to Netskope NG-SWG "nsProxy")
+##############################################################################
+PROCESS: accountsd: www.googleapis.com
+PROCESS: addressbooksourcesync: ocsp.digicert.com, www.googleapis.com
+PROCESS: appproxy: achecker-netskopecorp.goskope.com
+PROCESS: assetcachelocatorservice: ocsp.digicert.com
+PROCESS: assistantd: ocsp.digicert.com
+PROCESS: com.apple.geod: gsp-ssl.ls.apple.com
+PROCESS: com.apple.safari.safebrowsing.service: mask.icloud.com
+PROCESS: curl: storage-cdn.prod.automox.com
+PROCESS: google chrome helper: accountcapabilities-pa.googleapis.com, accounts.doubleclick.net, accounts.google.com, accounts.youtube.com, addons-pa.clients6.google.com, api.atlassian.com, apis.google.com, b5n.1password.com, calendar.google.com, chat.google.com, chat.openai.com, clients2.google.com, clients4.google.com, clients6.google.com, docs.google.com, drive.google.com, drivefrontend-pa.clients6.google.com, encrypted-tbn0.gstatic.com, espresso-pa.clients6.google.com, fonts.gstatic.com, i2-azdolkbjpapfwtqonmnjxmiqwdjars.init.cedexis-radar.net, lh3.googleusercontent.com, mail.google.com, media-akam.licdn.com, memex-pa.googleapis.com, mtalk.google.com, netskope-be.glean.com, ogads-pa.clients6.google.com, optimizationguide-pa.googleapis.com, people-pa.clients6.google.com, peoplestack-pa.clients6.google.com, peoplestackwebexperiments-pa.clients6.google.com, platform-akam.linkedin.com, play.google.com, rpt.cedexis.com, safebrowsingohttpgateway.googleapis.com, signaler-pa.clients6.google.com, ssl.gstatic.com, stk.protechts.net, trello.com, update.googleapis.com, waa-pa.clients6.google.com, web2.myvscloud.com, www.google.com, www.googleapis.com, www.gstatic.com, www.linkedin.com
+PROCESS: itunescloudd: ocsp.digicert.com
+PROCESS: kandji-daemon: rtc.iot.kandji.io
+PROCESS: mdmclient: 5dc5c27a.web-api.kandji.io
+PROCESS: mdnsresponder: dns.google, mask-h2.icloud.com
+PROCESS: microsoft update assistant: officeci-mauservice.azurewebsites.net
+PROCESS: netskope client: achecker-dtavernier.goskope.com, achecker-netskopecorp.goskope.com
+PROCESS: netskope client companion: companionapi.mynetskopedemo.com
+PROCESS: powerdatad: cabana-server.cdn-apple.com
+PROCESS: slack helper: edgeapi.slack.com, hippocryptoworkspace.slack.com, netskope.slack.com, psp-dpt.slack.com, slack.com, slackb.com, wss-primary.slack.com
+PROCESS: softwareupdated: swscan.apple.com
+PROCESS: submitdiaginfo: ocsp.digicert.com
+PROCESS: syspolicyd: api.apple-cloudkit.com
+
+##############################################################################
+## Steered Non-Web Traffic (sent to Netskope Cloud Firewall "app-fw")
+##############################################################################
+PROCESS: google chrome helper: 142.250.112.188:5228 (142.250.112.188), mtalk.google.com:5228 (142.250.111.188)
+
