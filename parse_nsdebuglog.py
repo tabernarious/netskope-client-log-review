@@ -75,6 +75,22 @@ def datestamps_first_last_line(log_file):
         #print(log_lines[-1])
         print("Last  log line Datestamp: " + datestamp_last_line.group(1).strip())
 
+        return 0
+
+# Read and print first and last datestamps for context
+def connected_to_gslbgw_server(log_file):
+    #Example gslbgw log line: 2024/05/01 07:50:34.981 stAgentSvc p6ff8 t50dc info tunnel.cpp:1074 nsTunnel DTLS SSL connected to the gslbgw server: gateway-ord2.goskope.com(163.116.249.35):443 successfully
+    datestamp_pattern = r'^(20[0-9]{2}\/[0-9]{2}\/[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]+?) '
+    gslbgw_connected_pattern = r'(nsTunnel D?TLS SSL connected to the gslbgw server: .* successfully)'
+
+    with open(log_file, 'r') as file:
+        for line in file:
+            gslbgw_connected = re.search(gslbgw_connected_pattern, line)
+            datestamp = re.search(datestamp_pattern, line)
+
+            if gslbgw_connected:
+                print(datestamp.group(1).strip() + " " + gslbgw_connected.group(1).strip())
+
 # Steering Exception: Cert-Pinned App
 def bypassing_connection_from_process(log_file):
     process_host_map = {}
@@ -293,6 +309,12 @@ def main():
 
     print()
     datestamps_first_last_line(log_file_path)
+
+    print()
+    print("##############################################################################")
+    print("## NG-SWG Gateway Connections
+    print("##############################################################################")
+    connected_to_gslbgw_server()
 
     print()
     print("##############################################################################")
