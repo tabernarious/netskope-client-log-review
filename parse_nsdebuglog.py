@@ -77,19 +77,35 @@ def datestamps_first_last_line(log_file):
 
         return 0
 
-# Read and print first and last datestamps for context
-def connected_to_gslbgw_server(log_file):
-    #Example gslbgw log line: 2024/05/01 07:50:34.981 stAgentSvc p6ff8 t50dc info tunnel.cpp:1074 nsTunnel DTLS SSL connected to the gslbgw server: gateway-ord2.goskope.com(163.116.249.35):443 successfully
+# Read and print all tunnel event logs
+def tunnel_events(log_file):
+    #Example log lines:
+    # 2024/05/01 07:50:34.981 stAgentSvc p6ff8 t50dc info tunnel.cpp:1074 nsTunnel DTLS SSL connected to the gslbgw server: gateway-ord2.goskope.com(163.116.249.35):443 successfully
+    # 2024/04/30 16:34:24.470 stAgentSvc p6ff8 ta9d4 info tunnel.cpp:292 nsTunnel DTLS disconnecting nsTunnel, context = NSTUNNEL_DISCONNECTED_BYUSER
+    # 2024/04/24 07:23:57.885 stAgentSvc p433c tc174 info npaTunnelMgr.cpp:597 CNpaTunnelMgr Set NPA (current) status from [NPA_IS_STARTING] to [NPA_IS_STARTED]
+    # 2024/04/24 07:23:57.885 stAgentSvc p433c tc174 info npaTunnelMgr.cpp:863 CNpaTunnelMgr NPA tunnel remote address is 163.116.249.69:443
+    # 2024/04/24 07:23:57.231 stAgentSvc p433c t4914 info npaTunnelMgr.cpp:1262 CNpaTunnelMgr NPA tunnel is already down, need to restart NPA client after re-auth
+    # 2024/04/24 07:23:57.231 stAgentSvc p433c t4914 info npaTunnelMgr.cpp:580 CNpaTunnelMgr Set NPA (Shutdown by GW) status from 1 to 0
+    # 2024/04/24 07:23:57.234 stAgentSvc p433c t4914 info npaTunnelMgr.cpp:575 CNpaTunnelMgr Set NPA (desired) status from [NPA_TO_START] to [NPA_TO_START]
+    # 2024/04/24 07:23:57.234 stAgentSvc p433c t3b64 info npaTunnelMgr.cpp:597 CNpaTunnelMgr Set NPA (current) status from [NPA_IS_STOPPED] to [NPA_IS_STARTING]
+    # 2024/04/24 07:23:58.512 stAgentSvc p433c tc174 info nsFilterDevice.cpp:831 nsFilterDevice NPA IP rules are reset with settings = 0x100e1.
+    # 2024/04/24 07:23:58.512 stAgentSvc p433c tc174 info nsFilterDevice.cpp:871 nsFilterDevice All NPA IP rules are added into kernel, num = 12.
+
     datestamp_pattern = r'^(20[0-9]{2}\/[0-9]{2}\/[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]+?) '
     gslbgw_connected_pattern = r'(nsTunnel D?TLS SSL connected to the gslbgw server: .* successfully)'
+    tunnel_disconnected_byuser_pattern = r'(nsTunnel D?TLS disconnecting nsTunnel, context = NSTUNNEL_DISCONNECTED_BYUSER)'
 
     with open(log_file, 'r') as file:
         for line in file:
             gslbgw_connected = re.search(gslbgw_connected_pattern, line)
+            tunnel_disconnected_byuser = re.search(tunnel_disconnected_byuser_pattern, line)
             datestamp = re.search(datestamp_pattern, line)
 
             if gslbgw_connected:
                 print(datestamp.group(1).strip() + " " + gslbgw_connected.group(1).strip())
+
+            if tunnel_disconnected_byuser:
+                print(datestamp.group(1).strip() + " " + tunnel_disconnected_byuser.group(1).strip())
 
 # Steering Exception: Cert-Pinned App
 def bypassing_connection_from_process(log_file):
@@ -312,9 +328,9 @@ def main():
 
     print()
     print("##############################################################################")
-    print("## NG-SWG Gateway Connections
+    print("## Internet Security Tunnel Events")
     print("##############################################################################")
-    connected_to_gslbgw_server()
+    tunnel_events(log_file_path)
 
     print()
     print("##############################################################################")
