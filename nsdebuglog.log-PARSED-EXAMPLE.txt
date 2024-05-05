@@ -7,10 +7,24 @@ Using macOS default: /Library/Logs/Netskope/nsdebuglog.log
 ##                            ##
 ################################
 
-Validated as of Netskope R114
+This script validated as of Netskope Client R114
 
 First log line Datestamp: 2024/05/04 12:51:41.228554
-Last  log line Datestamp: 2024/05/04 16:24:27.527121
+Last  log line Datestamp: 2024/05/05 13:18:52.138746
+
+##############################################################################
+## Internet Security Tunnel Events
+##############################################################################
+2024/05/04 13:52:40.106969 nsTunnel DTLS SSL connected to the gslbgw server: gateway-ord2.goskope.com(163.116.249.35):443 successfully
+2024/05/04 13:53:04.801432 nsTunnel DTLS SSL connected to the gslbgw server: gateway-ord2.goskope.com(163.116.249.35):443 successfully
+2024/05/04 14:43:49.383917 nsTunnel DTLS SSL connected to the gslbgw server: gateway-ord1.goskope.com(163.116.133.35):443 successfully
+2024/05/04 14:44:30.213425 nsTunnel DTLS SSL connected to the gslbgw server: gateway-ord1.goskope.com(163.116.133.35):443 successfully
+2024/05/04 14:53:42.175947 nsTunnel DTLS SSL connected to the gslbgw server: gateway-ord1.goskope.com(163.116.133.35):443 successfully
+2024/05/04 14:54:23.392999 nsTunnel DTLS SSL connected to the gslbgw server: gateway-ord1.goskope.com(163.116.133.35):443 successfully
+2024/05/04 15:46:37.073909 nsTunnel DTLS SSL connected to the gslbgw server: gateway-ord2.goskope.com(163.116.249.35):443 successfully
+2024/05/04 15:46:58.533275 nsTunnel DTLS SSL connected to the gslbgw server: gateway-ord2.goskope.com(163.116.249.35):443 successfully
+2024/05/04 15:47:55.614725 nsTunnel DTLS SSL connected to the gslbgw server: gateway-ord1.goskope.com(163.116.133.35):443 successfully
+2024/05/04 15:49:49.052962 nsTunnel DTLS disconnecting nsTunnel, context = NSTUNNEL_DISCONNECTED_BYUSER
 
 ##############################################################################
 ## Steering Exceptions to Private IPs (not sent to Netskope Cloud)
@@ -82,22 +96,22 @@ PROCESS: trustd: ocsp2.apple.com (17.253.27.206:443), valid.apple.com (17.253.27
 ##############################################################################
 PROCESS: accountsd: www.googleapis.com
 PROCESS: addressbooksourcesync: ocsp.digicert.com, www.googleapis.com
-PROCESS: appproxy: achecker-netskopecorp.goskope.com
+PROCESS: appproxy: achecker-tenant.goskope.com
 PROCESS: assetcachelocatorservice: ocsp.digicert.com
 PROCESS: assistantd: ocsp.digicert.com
 PROCESS: com.apple.geod: gsp-ssl.ls.apple.com
 PROCESS: com.apple.safari.safebrowsing.service: mask.icloud.com
 PROCESS: curl: storage-cdn.prod.automox.com
-PROCESS: google chrome helper: accountcapabilities-pa.googleapis.com, accounts.doubleclick.net, accounts.google.com, accounts.youtube.com, addons-pa.clients6.google.com, api.atlassian.com, apis.google.com, b5n.1password.com, calendar.google.com, chat.google.com, chat.openai.com, clients2.google.com, clients4.google.com, clients6.google.com, docs.google.com, drive.google.com, drivefrontend-pa.clients6.google.com, encrypted-tbn0.gstatic.com, espresso-pa.clients6.google.com, fonts.gstatic.com, i2-azdolkbjpapfwtqonmnjxmiqwdjars.init.cedexis-radar.net, lh3.googleusercontent.com, mail.google.com, media-akam.licdn.com, memex-pa.googleapis.com, mtalk.google.com, netskope-be.glean.com, ogads-pa.clients6.google.com, optimizationguide-pa.googleapis.com, people-pa.clients6.google.com, peoplestack-pa.clients6.google.com, peoplestackwebexperiments-pa.clients6.google.com, platform-akam.linkedin.com, play.google.com, rpt.cedexis.com, safebrowsingohttpgateway.googleapis.com, signaler-pa.clients6.google.com, ssl.gstatic.com, stk.protechts.net, trello.com, update.googleapis.com, waa-pa.clients6.google.com, web2.myvscloud.com, www.google.com, www.googleapis.com, www.gstatic.com, www.linkedin.com
+PROCESS: google chrome helper: accountcapabilities-pa.googleapis.com, accounts.doubleclick.net, accounts.google.com, accounts.youtube.com, addons-pa.clients6.google.com, api.atlassian.com, apis.google.com, b5n.1password.com, calendar.google.com, chat.google.com, chat.openai.com, clients2.google.com, clients4.google.com, clients6.google.com, docs.google.com, drive.google.com, drivefrontend-pa.clients6.google.com, encrypted-tbn0.gstatic.com, espresso-pa.clients6.google.com, fonts.gstatic.com, i2-azdolkbjpapfwtqonmnjxmiqwdjars.init.cedexis-radar.net, lh3.googleusercontent.com, mail.google.com, media-akam.licdn.com, memex-pa.googleapis.com, mtalk.google.com, tenant-be.glean.com, ogads-pa.clients6.google.com, optimizationguide-pa.googleapis.com, people-pa.clients6.google.com, peoplestack-pa.clients6.google.com, peoplestackwebexperiments-pa.clients6.google.com, platform-akam.linkedin.com, play.google.com, rpt.cedexis.com, safebrowsingohttpgateway.googleapis.com, signaler-pa.clients6.google.com, ssl.gstatic.com, stk.protechts.net, trello.com, update.googleapis.com, waa-pa.clients6.google.com, web2.myvscloud.com, www.google.com, www.googleapis.com, www.gstatic.com, www.linkedin.com
 PROCESS: itunescloudd: ocsp.digicert.com
 PROCESS: kandji-daemon: rtc.iot.kandji.io
 PROCESS: mdmclient: 5dc5c27a.web-api.kandji.io
 PROCESS: mdnsresponder: dns.google, mask-h2.icloud.com
 PROCESS: microsoft update assistant: officeci-mauservice.azurewebsites.net
-PROCESS: netskope client: achecker-dtavernier.goskope.com, achecker-netskopecorp.goskope.com
-PROCESS: netskope client companion: companionapi.mynetskopedemo.com
+PROCESS: netskope client: achecker-tenant.goskope.com, achecker-tenant.goskope.com
+PROCESS: netskope client companion: companionapi.mytenantdemo.com
 PROCESS: powerdatad: cabana-server.cdn-apple.com
-PROCESS: slack helper: edgeapi.slack.com, hippocryptoworkspace.slack.com, netskope.slack.com, psp-dpt.slack.com, slack.com, slackb.com, wss-primary.slack.com
+PROCESS: slack helper: edgeapi.slack.com, hippocryptoworkspace.slack.com, tenant.slack.com, psp-dpt.slack.com, slack.com, slackb.com, wss-primary.slack.com
 PROCESS: softwareupdated: swscan.apple.com
 PROCESS: submitdiaginfo: ocsp.digicert.com
 PROCESS: syspolicyd: api.apple-cloudkit.com

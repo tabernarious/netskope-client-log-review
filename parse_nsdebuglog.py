@@ -54,6 +54,13 @@
 # Unknown
 #   ExceptiontMgr IP 10.2.100.207 is found in IP address range Exception List
 #   ExceptiontMgr IP address : 10.2.100.207 is in firewall exceptions
+# Steering Mode
+#   2024/04/24 14:09:22.649 stAgentSvc p610c t9474 info tunnelMgr.cpp:2204 CTunnelMgr Client location is remote and traffic mode is 3, DNS 1
+#   2024/04/24 14:09:22.649 stAgentSvc p610c t9474 info tunnelMgr.cpp:2252 CTunnelMgr dynamic steering enhancement: Dynamic Web Mode = 1, Firewall Mode = 1, DNS Mode = 1, steeringNone = false
+#   2024/04/25 13:47:53.684 stAgentSvc p1bcc t58b4 info tunnelMgr.cpp:2204 CTunnelMgr Client location is on-prem and traffic mode is 3, DNS 1
+#   2024/04/25 13:47:53.684 stAgentSvc p1bcc t58b4 info tunnelMgr.cpp:2252 CTunnelMgr dynamic steering enhancement: Dynamic Web Mode = 1, Firewall Mode = 1, DNS Mode = 1, steeringNone = false
+#   2024/04/25 07:46:19.136 stAgentSvc p1bcc t3764 info tunnelMgr.cpp:2204 CTunnelMgr Client location is N/A and traffic mode is 1, DNS 1
+#   2024/04/25 07:46:19.136 stAgentSvc p1bcc t3764 info tunnelMgr.cpp:2252 CTunnelMgr dynamic steering enhancement: Dynamic Web Mode = 0, Firewall Mode = 0, DNS Mode = 1, steeringNone = false
 
 import re
 import argparse
@@ -90,6 +97,9 @@ def tunnel_events(log_file):
     # 2024/04/24 07:23:57.234 stAgentSvc p433c t3b64 info npaTunnelMgr.cpp:597 CNpaTunnelMgr Set NPA (current) status from [NPA_IS_STOPPED] to [NPA_IS_STARTING]
     # 2024/04/24 07:23:58.512 stAgentSvc p433c tc174 info nsFilterDevice.cpp:831 nsFilterDevice NPA IP rules are reset with settings = 0x100e1.
     # 2024/04/24 07:23:58.512 stAgentSvc p433c tc174 info nsFilterDevice.cpp:871 nsFilterDevice All NPA IP rules are added into kernel, num = 12.
+    # 2024/04/25 07:46:36.388 stAgentSvc p1bcc t45ec info NSCom2.cpp:1851 NSCOM2 message NPA_REQUEST_AUTHENTICATION sent from server to "ALL" client with count 1
+    # 2024/04/25 07:46:36.388 stAgentSvc p1bcc t45ec info npaTunnelMgr.cpp:580 CNpaTunnelMgr Set NPA (Shutdown by GW) status from 0 to 1
+
 
     datestamp_pattern = r'^(20[0-9]{2}\/[0-9]{2}\/[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]+?) '
     gslbgw_connected_pattern = r'(nsTunnel D?TLS SSL connected to the gslbgw server: .* successfully)'
@@ -321,7 +331,7 @@ def main():
     print("##                            ##")
     print("################################")
     print()
-    print("Validated as of Netskope R114")
+    print("This script validated as of Netskope Client R114")
 
     print()
     datestamps_first_last_line(log_file_path)
